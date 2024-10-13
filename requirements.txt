@@ -1,6 +1,14 @@
-requests
+backports.zoneinfo
+certifi
+charset-normalizer
+discord-webhook
 html2text
-discord
 icalendar
-pytz
+idna
+python-dateutil
 python-dotenv
+pytz
+requests
+six
+tzdata
+urllib3
