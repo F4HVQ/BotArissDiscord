@@ -1,60 +1,75 @@
 # Ariss Contact Discord Bot
 
-This bot is making announces in a Discord Channel when an ARISS contact is scheduled during the next two weeks. 
-It's a quick and dirty script, but it works.
+## Description
+
+This bot is making announces in a Discord Channel when an ARISS contact is scheduled during the next **two weeks**. 
 
 - It get the events from an ICS calendar from the network
-- In this configuration, it filter only European passes but can be easily converted to other regions
+- In this configuration, it filter only **European** passes
+
 
 ## Installation
 
-I highly recommend you use a virtual-env to install it.
+### Python
 
-### Pre-requisites
+Use default Python or install new one.
 
-You will need:
-1. The Discord Channel ID to publish to.
-    To find it, you need to turn your discord app in developer mode (From you **user** settings -> advanced -> Developer mode)
-    Then right click on the channel you want the id, et you have the ability to copy it in the contextual menu
-1. A Discord API key
-    - Got to the Discord developper portal https://discord.com/developers/applications and connect your account
-    - Go to **New Application** (top right)
-    - Give a name to your bot
-    - On the left menu choose **Bot**
-    - Click on **Reset Token** and Copy and save your Token. It won't show again
-    - In the **Privileged Gateway Intents** part of the page, check the **Message Content Intent** switch so the bot is allowed to send messages.
-1. The URL of the ICS calendar ( I got mine from https://www.amsat-on.be/ )
 
-### Configuration of the script
+### Discord Webhook
+
+TODO
+
+
+### Sources
+
+Récupération des sources
+```
+[?]$ cd ~
+[~]$ git clone git@github.com:F4HVQ/BotArissDiscord.git
+[~]$ cd BotArissDiscord
+```
+
+Création de l'environnement et installation des modules nécessaires
+```
+[BotArissDiscord]$ python -m venv .venv
+[BotArissDiscord]$ source .venv/bin/activate
+
+[BotArissDiscord]$ pip install -r requirements.txt
+```
+
+
+### Configuration
 
 Copy the `.env.dist` file as `.env` file
 ```
 cp .env.dist .env
 ```
 Edit the `.env` file to specify
-- Set the **DiscordChannel** id you want to publish to with the one you got on the previous step
-- Set the **BotKEY** Discord API key with the Token you got in the previous step
-- You can change the **Location** to your area. It's the one from the "FM over Europe" string in the event. Put "." if you want the whole world.
+- You can change the **Location** to your area.
+  It's the one from the "FM over Europe" string in the event. Put "." if you want the whole world.
 - Set the **CalendarURL** to the URL containing the ICS calendar
+  The URL of the ICS calendar (example: https://www.amsat-on.be/)
 
-### Setup of the script
 
-1. Create a `virtualenv` 
-You may need to replace python with python3 on some platforms.
+### Usage
+
+Execution manuelle
 ```
-python -m venv arissenv 
-source arissenv/bin/activate
-```
-2. You install the requirements
-```
-pip install -r requirements.txt
+[~]$ cd ./BotArissDiscord
+[BotArissDiscord]$ source ../.venv/bin/activate
+[BotArissDiscord]$ cd ./src
+[src]$ python ./ariss_main.py
 ```
 
-### Use of the script
+Execution automatique
+```
+[?]$ crontab -e
+```
 
-I run this script each week with
+Ajouter la ligne d'instruction suivante
 ```
-. arissenv/bin/activate
-python arissBotDiscord.py
+0 0 */7 * * cd <pat_to>/BotArissDiscord/src && ../.venv/bin/python3 ./ariss_main.py
 ```
+
+
 

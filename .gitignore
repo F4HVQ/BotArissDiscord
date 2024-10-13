@@ -1,1 +1,16 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+.cache*
+
+# Environments
 .env
+.venv/
+
+# PyCharm
+.idea/
+
+/generated/*
+*.log
+
