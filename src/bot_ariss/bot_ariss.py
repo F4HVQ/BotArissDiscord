@@ -24,13 +24,13 @@ class BotAriss:
                  ) -> None:
         """ TODO """
 
-        # Reading configuration from .env file    
+        # Reading configuration from .env file
         load_dotenv()
 
         self.mode           = os.getenv('Mode')
         self.location       = os.getenv('Location')
         self.calendarURL    = os.getenv('CalendarURL')
-        
+
 #        print(f"DBG : {self.mode}")
 #        print(f"DBG : {self.location}")
 #        print(f"DBG : {self.calendarURL}")
@@ -103,7 +103,7 @@ class BotAriss:
 #    def ret_upcoming_events(self,
 #                            events):
 #        """ TODO """
-#        
+#
 #        if not events:
 #            print("Aucun événement à venir trouvé.")
 #            return
@@ -114,22 +114,22 @@ class BotAriss:
 #            end     = event['end'].strftime('%Y-%m-%d %H:%M:%S')
 #            summary = event['summary']
 #            content = self._convert_html_to_markdown(event['description'])
-#            
+#
 #            return(f"{start} - {end}: {summary}\n--\n {content}")
 
     def send_msg(self):
         """ TODO """
 
-        
+
         ics_url          = self.calendarURL
         events           = self._get_events_from_ics(ics_url)
 #        formatted_events = self.ret_upcoming_events(events)
 #        print(f"DBG : {formatted_events}")
-        
+
         if not events:
             print("No event found.")
             return
-            
+
         print("Future events:")
         s = ""
         for event in events:
@@ -137,11 +137,11 @@ class BotAriss:
             end     = event['end'].strftime('%Y-%m-%d %H:%M:%S')
             summary = self._convert_html_to_markdown(event['summary'])
             content = self._convert_html_to_markdown(event['description'])
-            
+
             event_info = f"**Date**    : {start}\n" \
                          f"**Summary** : {summary}"
-#                        f"{content}" \
                          f"---\n" \
+#                        f"{content}" \
 
             s += event_info
 
@@ -149,5 +149,5 @@ class BotAriss:
 
 #        print(f"DBG : \n{synthese}")
         return synthese
-       
+
 
