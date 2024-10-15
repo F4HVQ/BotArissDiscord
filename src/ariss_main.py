@@ -24,15 +24,15 @@ def send_discord_notification(message: str):
     """
 
     if message:
-        message_header = f"TEST TEST TEST\n"
+        message_header = f"\n"
         message_body   = f"{message}\n"
 
         message_footer = "Pour plus de détails, veuillez vous référer\n" \
                          "- [ARISS calendar](https://www.amsat-on.be/ariss-calendar-with-scheduled-contacts-by-the-ariss-operation-team/)\n" \
 
         concatenated_message = "".join([message_header, message_body, message_footer])
-        print(f"DBG \n" \
-              f"{concatenated_message}")
+#        print(f"DBG \n" \
+#              f"{concatenated_message}")
 
         # Note : Envoi
         DiscordClient().send_discord_message("🛰️ **ALERTE** 🛰️ ",  # Note : L'emoji "gyrophare" est référencé 1F6A8 sur la page : https://www.w3schools.com/charsets/ref_emoji.asp

@@ -139,7 +139,7 @@ class BotAriss:
             content = self._convert_html_to_markdown(event['description'])
 
             event_info = f"**Date**    : {start}\n" \
-                         f"**Summary** : {summary}"
+                         f"**Summary** : {summary}" \
                          f"---\n" \
 #                        f"{content}" \
 
