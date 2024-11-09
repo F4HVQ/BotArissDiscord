@@ -1,43 +1,49 @@
-# -*- coding: utf-8 -*-
 """ TODO """
 
 # Note : Built-in imports
-import sys
-import os
-
 import html2text
-
-from typing import List, Dict, Optional, Any
-from pathlib import Path
+import os
+import requests
+import sys
+import yaml
 
 from datetime import datetime, timedelta, date
-from dotenv import load_dotenv
 from icalendar import Calendar
+from pathlib import Path
 from pytz import UTC
-import requests
+from typing import List, Dict, Optional, Any
+
+try:
+    pass
+
+except ImportError as err:
+    print("[IMPORT ERROR]\t\t{} : {}".format(__file__, err))
+    sys.exit()
 
 
 class BotAriss:
     """ TODO """
 
     def __init__(self,
-                 ) -> None:
-        """ TODO """
+                 future_days) -> None:
+        """ Constructor
+
+        :param future_days: TODO        
+        """
+
+        self._future_days = future_days
 
         # Reading configuration from .env file
-        load_dotenv()
+        with open("./env.yaml", "r") as config_file:
+            self._config = yaml.safe_load(config_file)
 
-        self.mode           = os.getenv('Mode')
-        self.location       = os.getenv('Location')
-        self.calendarURL    = os.getenv('CalendarURL')
-
-#        print(f"DBG : {self.mode}")
-#        print(f"DBG : {self.location}")
-#        print(f"DBG : {self.calendarURL}")
+#        print(f"DBG :\n{self._config}")
 
 
     def _get_events_from_ics(self,
-                            url):
+                             url):
+        """ TODO """
+
         response = requests.get(url)
         response.raise_for_status()
 
@@ -45,8 +51,8 @@ class BotAriss:
         cal = Calendar.from_ical(response.content)
 
         # We keep track of the next 2 weeks (can be adapted)
-        now            = datetime.utcnow().replace(tzinfo=UTC)
-        two_week_later = now + timedelta(days=14)
+        now      = datetime.utcnow().replace(tzinfo=UTC)
+        deadline = now + timedelta(days=self._future_days)
 
         events = []
 
@@ -74,17 +80,18 @@ class BotAriss:
                 elif isinstance(event_end, date):
                     event_end = datetime.combine(event_end, datetime.min.time(), tzinfo=UTC)
 
-                if now <= event_start <= two_week_later:
-                    #print(event_desc)
-                    if self.location in event_desc:
+                if now <= event_start <= deadline:
+#                    print(f"DBG :\nevent_desc : {event_desc}")
+                    found = any(s in event_desc for s in self._config["keywords"])
+                    if found:
                       events.append({
+                          "stamp"      : event_stamp,
                           "start"      : event_start,
                           "end"        : event_end,
-                          "stamp"      : event_stamp,
                           "summary"    : event_summary,
                           "description": event_desc
                       })
-#        print(f"DBG : {events}")
+#        print(f"DBG :\nevents : {events}")
         return events
 
     def _convert_html_to_markdown(self,
@@ -117,12 +124,10 @@ class BotAriss:
 #
 #            return(f"{start} - {end}: {summary}\n--\n {content}")
 
-    def send_msg(self):
+    def get_synthese(self):
         """ TODO """
 
-
-        ics_url          = self.calendarURL
-        events           = self._get_events_from_ics(ics_url)
+        events           = self._get_events_from_ics(self._config["CalendarURL"])
 #        formatted_events = self.ret_upcoming_events(events)
 #        print(f"DBG : {formatted_events}")
 

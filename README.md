@@ -58,7 +58,7 @@ Execution manuelle
 [~]$ cd ./BotArissDiscord
 [BotArissDiscord]$ source ../.venv/bin/activate
 [BotArissDiscord]$ cd ./src
-[src]$ python ./ariss_main.py
+[src]$ python ./ariss_main.py --help
 ```
 
 Execution automatique
@@ -68,7 +68,12 @@ Execution automatique
 
 Ajouter la ligne d'instruction suivante
 ```
-0 0 */7 * * cd <pat_to>/BotArissDiscord/src && ../.venv/bin/python3 ./ariss_main.py
+# Tout les jours
+0 0 * * * cd <pat_to>/BotArissDiscord/src && ../.venv/bin/python3 ./ariss_main.py -n 2
+
+# Tout les 3 mois
+0 0 * */2 * cd <pat_to>/BotArissDiscord/src && ../.venv/bin/python3 ./ariss_main.py -t
+
 ```
 
 
