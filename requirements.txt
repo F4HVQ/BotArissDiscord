@@ -8,6 +8,7 @@ idna
 python-dateutil
 python-dotenv
 pytz
+PyYAML
 requests
 six
 tzdata
